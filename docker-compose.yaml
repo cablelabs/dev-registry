@@ -1,0 +1,22 @@
+services:
+  registry:
+    container_name: registry
+    build:
+      context: app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - registry-db
+#    environment:
+#      MONGO_HOST: registry-db
+#      MONGO_PORT: 27017
+#      MONGO_DATABASE:  registry-db
+  registry-db:
+    container_name: registry-db
+    image: mongo:6
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: developer-api
+volumes:
+  mongodb_data:

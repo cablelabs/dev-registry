@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: registry
+  labels:
+    app: registry
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: registry
+  template:
+    metadata:
+      labels:
+        app: registry
+    spec:
+      serviceAccountName: default
+      restartPolicy: Always
+      containers:
+        - name: registry
+          image: code.cablelabs.com:4567/mbridges/registry/app:main
+          imagePullPolicy: Always
+          # Currently not used. Use registry/.env.production instead. Leaving as example incase needed later
+          # env:
+          #   - name: VITE_EDGE_BACKEND_ADDR
+          #     value: "http://on-edge.10glab.cablelabs.com"
+          #   - name: VITE_EDGE_BACKEND_PORT
+          #     value: "8000"
+      imagePullSecrets:
+        - name: registry-app-credentials
